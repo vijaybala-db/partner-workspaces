@@ -29,7 +29,3 @@ SELECT * FROM main.sfdc_bronze.account_partner__c
 WHERE Partner_Account__c = '00161000005eOe6AAE'  -- Deloitte Consulting (HQ)
 AND Consumption_Split_Percentage__c IS NOT NULL
 AND Consumption_Split_Percentage__c > 0;
-
--- COMMAND ----------
-
-
