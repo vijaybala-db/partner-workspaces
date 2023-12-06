@@ -60,9 +60,9 @@ SELECT * FROM main.sfdc_bronze.account_partner__c ap WHERE ap.processDate = (SEL
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE users.vijay_balasubramaniam.partner_accounts AS 
-  SELECT
+  SELECT DISTINCT
   ap.Name, ap.PartnerAccount_Manager__c, ap.Partner_Account__c, a.Name AS Partner_Account_Name,
-  ap.PartnerSales_Manager__c, ap.Customer_Account_Name__c, ap.Consumption_Split_Percentage__c, 
+  ap.PartnerSales_Manager__c, ap.Account__c AS Customer_Account, ap.Customer_Account_Name__c, ap.Consumption_Split_Percentage__c, 
   ap.Partner_Engagement_Stage__c, ap.Databricks_BD_Owner_Name__c
   FROM main.sfdc_bronze.account_partner__c ap
   LEFT OUTER JOIN main.sfdc_bronze.account a ON ap.Partner_Account__c = a.Id
@@ -73,7 +73,24 @@ CREATE OR REPLACE TABLE users.vijay_balasubramaniam.partner_accounts AS
 
 -- COMMAND ----------
 
-SELECT * from main.certified.workspaces_latest;
+-- SELECT regexp_extract(col1, '<a href="/(.*?)"')
+-- FROM VALUES ('<a href="/0016100000WTJLX" target="_top">Caserta</a>')
+
+-- COMMAND ----------
+
+SELECT * FROM users.vijay_balasubramaniam.partner_accounts;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ### Find all customer workspaces linked to partner accounts
+
+-- COMMAND ----------
+
+SELECT pa.*, w.*
+FROM users.vijay_balasubramaniam.partner_accounts pa
+LEFT OUTER JOIN main.certified.workspaces_latest w ON pa.Customer_Account = w.workspace_aggregation_id
+WHERE pa.Partner_Account_Name LIKE '%Deloitte%';
 
 -- COMMAND ----------
 
