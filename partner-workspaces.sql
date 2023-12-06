@@ -54,15 +54,16 @@ SELECT * FROM main.sfdc_bronze.account WHERE Id='00161000005eOe6AAE'  -- Deloitt
 
 -- COMMAND ----------
 
-SELECT 
-ap.PartnerAccount_Manager__c, ap.Partner_Account__c, a.Name AS Partner_Account_Name,
-ap.PartnerSales_Manager__c, ap.Customer_Account_Name__c, ap.Consumption_Split_Percentage__c, 
-ap.Partner_Engagement_Stage__c, ap.Databricks_BD_Owner_Name__c
-FROM main.sfdc_bronze.account_partner__c ap
-LEFT OUTER JOIN main.sfdc_bronze.account a ON ap.Partner_Account__c = a.Id
-WHERE ap.Consumption_Split_Percentage__c IS NOT NULL
-AND ap.Consumption_Split_Percentage__c > 0
-AND NOT ap.isDeleted;
+CREATE OR REPLACE TABLE users.vijay_balasubramaniam.partner_accounts AS 
+  SELECT 
+  ap.Name, ap.PartnerAccount_Manager__c, ap.Partner_Account__c, a.Name AS Partner_Account_Name,
+  ap.PartnerSales_Manager__c, ap.Customer_Account_Name__c, ap.Consumption_Split_Percentage__c, 
+  ap.Partner_Engagement_Stage__c, ap.Databricks_BD_Owner_Name__c
+  FROM main.sfdc_bronze.account_partner__c ap
+  LEFT OUTER JOIN main.sfdc_bronze.account a ON ap.Partner_Account__c = a.Id
+  WHERE ap.Consumption_Split_Percentage__c IS NOT NULL
+  AND ap.Consumption_Split_Percentage__c > 0
+  AND NOT ap.isDeleted;
 
 -- COMMAND ----------
 
